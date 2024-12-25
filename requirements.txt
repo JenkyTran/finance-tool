@@ -5,5 +5,3 @@ langchain-google-genai
 plotly
 pandas
 matplotlib
-os
-sqlite3
