@@ -21,7 +21,7 @@ def Dashboard():
     create_table()
 
     with st.sidebar:
-        st.image("logo.png", use_column_width=True)
+        st.image("D:/OneDrive/Desktop/Awake Drive JSC/finance-tool/Logo.png", use_column_width=True)
         st.markdown('<p style="text-align: center; font-size: small;">Awake Drive Joint Stock Company</p>', unsafe_allow_html=True)
 
 
