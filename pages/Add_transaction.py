@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import os
 
 # Đường dẫn tới file Excel
 duong_dan_excel = "D:/OneDrive/Desktop/Awake Drive JSC/finance-tool/pages/chiphi.xlsx"
@@ -15,6 +16,11 @@ def load_data():
 
 def save_data(df):
     try:
+        # Kiểm tra và tạo thư mục nếu chưa tồn tại
+        directory = os.path.dirname(duong_dan_excel)
+        if not os.path.exists(directory):
+            os.makedirs(directory)  # Tạo thư mục
+
         # Lưu dữ liệu vào file Excel
         df.to_excel(duong_dan_excel, index=False)
         st.success("Data saved to chiphi.xlsx")
