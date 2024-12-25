@@ -5,3 +5,4 @@ langchain-google-genai
 plotly
 pandas
 matplotlib
+openpyxl>=3.0.0
