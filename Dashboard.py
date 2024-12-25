@@ -1,6 +1,6 @@
 import streamlit as st
 import sqlite3
-from pages import Add_transaction, Insights, Transactions
+import os
 
 
 def create_table():
@@ -20,18 +20,23 @@ def create_table():
 def Dashboard():
     create_table()
 
+    logo_path = "Logo.png"  # Sử dụng đường dẫn tương đối
     with st.sidebar:
-        st.image("D:/OneDrive/Desktop/Awake Drive JSC/finance-tool/Logo.png", use_column_width=True)
-        st.markdown('<p style="text-align: center; font-size: small;">Awake Drive Joint Stock Company</p>', unsafe_allow_html=True)
-
+        # Kiểm tra sự tồn tại của logo
+        if os.path.exists(logo_path):
+            st.image(logo_path, use_column_width=True)
+        else:
+            st.warning("Logo file not found. Please ensure 'Logo.png' is in the same folder as 'Dashboard.py'.")
+        st.markdown('<p style="text-align: center; font-size: small;">Awake Drive Joint Stock Company</p>',
+                    unsafe_allow_html=True)
 
     st.title("Finance - Awake Drive JSC")
 
     st.write("""
     Welcome to the Awake Drive Financial Management Tool! This app is designed to help Awake Drive JSC manage and track financial transactions efficiently.
-    
+
     With this tool, you can:
-    
+
      - Record new transactions
      - View detailed financial analysis
      - Explore your transaction history
@@ -41,20 +46,21 @@ def Dashboard():
     pages = {
         "Add transaction": "./pages/Add_transaction.py",
         "Insights": "./pages/Insights.py",
-        "Your transactions": "./pages/Your_transactions.switch⚊pages.py",
+        "Your transactions": "./pages/Your_transactions.py",
     }
-
-
 
     col1, col2 = st.columns([1, 1])
 
     with col1:
         if st.button("Add transaction"):
-            st.switch_page("pages/Add_transaction.py")
+            st.write("Redirecting to Add Transaction page...")
+            st.experimental_rerun()  # Bạn cần sửa lại hành vi của nút chuyển trang
 
     with col2:
         if st.button("AI assistant"):
-            st.switch_page("pages/ChatBot.py")
+            st.write("Redirecting to AI Assistant page...")
+            st.experimental_rerun()  # Sử dụng đúng cách chuyển trang
+
 
 if __name__ == "__main__":
     Dashboard()
