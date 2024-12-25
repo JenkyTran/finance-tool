@@ -60,23 +60,27 @@ def generate_insights():
 
 def add_expense():
     df = load_data()
-    date = st.date_input("Date", value="today", format='YYYY-MM-DD')
-    expense = st.text_input("Expense")
-    amount = st.number_input("Amount $")
-    account = st.text_input("Account")
+
+    # Input từ người dùng
+    date = st.date_input("Date")
+    expense = st.text_input("Expense Name")
+    amount = st.number_input("Amount $", min_value=0.0, step=0.01)
     category = st.text_input("Category")
     note = st.text_area("Note")
 
     if st.button("Add Expense"):
-        # Thêm một dòng mới vào DataFrame
-        new_expense = {
+        # Tạo một DataFrame mới từ dòng dữ liệu cần thêm
+        new_expense = pd.DataFrame([{
             "Type": "Expense",
             "Name": expense,
             "Category": category,
             "Amount": amount,
             "Date": date,
-        }
-        df = df.append(new_expense, ignore_index=True)
+            "Note": note
+        }])
+
+        # Dùng pd.concat để thêm dòng mới vào DataFrame hiện tại
+        df = pd.concat([df, new_expense], ignore_index=True)
 
         # Lưu lại dữ liệu vào file Excel
         save_to_excel(df)

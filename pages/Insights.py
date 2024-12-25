@@ -96,10 +96,19 @@ def generate_insights():
 
         # Plot line chart cho trends
         fig, ax = plt.subplots(figsize=(10, 6))
-        combined_data.plot(ax=ax)
-        ax.set_title(f"Income and Expense Trends by {time_frame}")
-        ax.set_xlabel(time_frame)
-        ax.set_ylabel("Amount")
+        combined_data.plot(ax=ax, marker='o')
+
+        # Tùy chỉnh biểu đồ
+        ax.set_title(f"Income and Expense Trends by {time_frame}", fontsize=16)
+        ax.set_xlabel(time_frame, fontsize=12)
+        ax.set_ylabel("Amount (VND)", fontsize=12)  # Thêm đơn vị của Amount, ví dụ: VND
+        ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x:,.0f}"))  # Định dạng số có dấu phẩy
+
+        # Tùy chỉnh giao diện
+        ax.grid(True, linestyle="--", alpha=0.7)  # Thêm lưới nhẹ
+        ax.legend(["Income", "Expense"], fontsize=10)  # Chú thích biểu đồ
+
+        # Hiển thị biểu đồ trên Streamlit
         st.pyplot(fig)
 
     else:

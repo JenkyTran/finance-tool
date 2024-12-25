@@ -2,14 +2,14 @@ import streamlit as st
 import pandas as pd
 
 # Đường dẫn tới file Excel
-duong_dan_excel = "chiphi.xlsx"
+duong_dan_excel = "D:/OneDrive/Desktop/Awake Drive JSC/finance-tool/pages/chiphi.xlsx"
 
 def load_data():
     try:
         # Đọc dữ liệu từ file Excel
         df = pd.read_excel(duong_dan_excel)
     except FileNotFoundError:
-        # Nếu file không tồn tại, tạo DataFrame rỗng
+        # Nếu file không tồn tại, tạo DataFrame rỗng với 6 cột đúng cấu trúc
         df = pd.DataFrame(columns=["Type", "Name", "Category", "Amount", "Date", "Note"])
     return df
 
@@ -23,28 +23,57 @@ def save_data(df):
 
 def add_transaction():
     st.title("Add Transaction")
-    transaction_type = st.selectbox("Select Transaction Type", ["Select", "Income", "Expense"])
-    name = st.text_input("Enter Name")
-    col1, col2 = st.columns(2)
-    category = col1.selectbox("Select Category", ["Select"] + categories.get(transaction_type, []))
-    amount = col2.number_input("Enter Amount", min_value=0, value=0)
-    date = st.date_input("Select Date")
-    st.text("")
 
+    # Chọn loại giao dịch: Income hoặc Expense
+    transaction_type = st.selectbox("Select Transaction Type", ["Select", "Income", "Expense"])
+
+    # Nhập tên giao dịch
+    name = st.text_input("Enter Name")
+
+    # Chọn danh mục và nhập số tiền
+    col1, col2 = st.columns(2)
+    category = col1.selectbox(
+        "Select Category",
+        ["Select"] + categories.get(transaction_type, []) if transaction_type != "Select" else ["Select"]
+    )
+    amount = col2.number_input("Enter Amount", min_value=0.0, step=0.01)
+
+    # Chọn ngày giao dịch
+    date = st.date_input("Select Date")
+
+    # Ghi chú tùy chọn
+    note = st.text_area("Add Note (Optional)")
+
+    # Xử lý khi nhấn nút "Add Transaction"
     if st.button("Add Transaction"):
-        if transaction_type == "Select" or amount == 0 or not name or category == "Select":
-            st.warning("Please ensure that you have filled all the fields.")
+        if transaction_type == "Select" or category == "Select" or amount <= 0 or not name:
+            st.warning("Please fill in all required fields!")
         else:
-            new_row = {"Type": transaction_type, "Name": name, "Category": category, "Amount": amount, "Date": date, "Note": ""}
+            # Tạo một dòng mới cho giao dịch
+            new_row = {
+                "Type": transaction_type,
+                "Name": name,
+                "Category": category,
+                "Amount": amount,
+                "Date": date,
+                "Note": note
+            }
+
+            # Load dữ liệu hiện có, thêm giao dịch mới và lưu lại
             df = load_data()
-            new_df = pd.DataFrame([new_row])
-            df = pd.concat([df, new_df], ignore_index=True)
+            new_df = pd.DataFrame([new_row])  # Tạo DataFrame cho giao dịch mới
+            df = pd.concat([df, new_df], ignore_index=True)  # Gộp giao dịch mới vào dữ liệu hiện tại
             save_data(df)
+
+            # Thông báo thành công
             st.success("Transaction added successfully!")
 
 if __name__ == "__main__":
+    # Định nghĩa danh mục cho từng loại giao dịch
     categories = {
-        "Income": ["Salary", "Allowance", "Freelance", "Gift", "Other"],
-        "Expense": ["Housing", "Transportation", "Food", "Groceries", "Utilities", "Grooming", "Entertainment", "Healthcare", "Other"]
+        "Income": ["Funding", "Competition", "Freelance", "Donate", "Other"],
+        "Expense": ["Competition", "Bonding", "Product", "Company", "Marketing", "Sales", "Bonus", "Other"]
     }
+
+    # Gọi hàm thêm giao dịch
     add_transaction()
