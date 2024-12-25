@@ -50,31 +50,6 @@ def Dashboard():
         "AI Assistant": "./pages/ChatBot.py",
     }
 
-    col1, col2 = st.columns([1, 1])
-
-    # Sử dụng st.session_state để lưu trạng thái nút được nhấn
-    if "page" not in st.session_state:
-        st.session_state.page = None
-
-    with col1:
-        if st.button("Add transaction"):
-            st.session_state.page = "Add transaction"
-
-    with col2:
-        if st.button("AI Assistant"):
-            st.session_state.page = "AI Assistant"
-
-    # Chuyển trang dựa vào trạng thái nút
-    if st.session_state.page == "Add transaction":
-        st.write("Redirecting to Add Transaction page...")
-        st.write("This would load: ", pages["Add transaction"])
-        # Thay thế bằng logic thực sự để hiển thị nội dung từ Add_transaction.py
-
-    elif st.session_state.page == "AI Assistant":
-        st.write("Redirecting to AI Assistant page...")
-        st.write("This would load: ", pages["AI Assistant"])
-        # Thay thế bằng logic thực sự để hiển thị nội dung từ ChatBot.py
-
 
 if __name__ == "__main__":
     Dashboard()
