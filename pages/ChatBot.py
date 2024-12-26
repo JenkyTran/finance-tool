@@ -37,14 +37,18 @@ detailed_prompt_template = """
 
 def load_excel_data(file_path):
     try:
-        return pd.read_excel(file_path,engine='openpyxl')
+        return pd.read_excel(file_path, engine="openpyxl")
     except FileNotFoundError:
         return pd.DataFrame()
+    except Exception as e:
+        st.error(f"Error loading Excel file: {e}")
+        return pd.DataFrame()
+
 data2 = load_excel_data(plan_path)
 data1 = load_excel_data(transaction_path)
-da = str(data1.to_json)
-ta = str(data2.to_json)
-data = da+ta
+da = data1.to_json() if not data1.empty else "{}"
+ta = data2.to_json() if not data2.empty else "{}"
+data = da + ta
 print("---")
 print(data)
 def create_task_prompt(context):

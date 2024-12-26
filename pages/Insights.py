@@ -3,8 +3,9 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 
-# Đường dẫn tới file Excel
-duong_dan_excel = "pages/chiphi.xlsx"
+duong_dan_excel = "D:/OneDrive/Desktop/Awake Drive JSC/finance-tool/pages/chiphi.xlsx"
+
+
 def load_data():
     try:
         # Đọc dữ liệu từ file Excel

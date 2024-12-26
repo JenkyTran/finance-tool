@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import os
 
-# Đường dẫn tới file Excel
 duong_dan_excel = "D:/OneDrive/Desktop/Awake Drive JSC/finance-tool/pages/chiphi.xlsx"
 
 def load_data():
